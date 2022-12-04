@@ -71,12 +71,18 @@ def load_input() -> list[Move]:
         return [[input_map[x] for x in line.strip().split(" ")] for line in f]
 
 
+def part_1(moves: list[Move]) -> int:
+    return sum(evaluate_round(*game_round) for game_round in moves)
+
+
+def part_2(moves: list[Move]) -> int:
+    return sum(evaluate_round(*game_round, part_1=False) for game_round in moves)
+
+
 def main():
     rounds = load_input()
-    print(f"Part 1: {sum(evaluate_round(*game_round) for game_round in rounds)}")
-    print(
-        f"Part 2: {sum(evaluate_round(*game_round, part_1=False) for game_round in rounds)}"
-    )
+    print(f"Part 1: {part_1(rounds)}")
+    print(f"Part 2: {part_2(rounds)}")
 
 
 if __name__ == "__main__":
