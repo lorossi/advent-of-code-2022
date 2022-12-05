@@ -41,17 +41,17 @@ def load_input() -> tuple[list[str], list[dict]]:
     return stacks, moves
 
 
-def apply_moves(stacks: list[str], moves: list[dict], part_2=False):
+def apply_moves(stacks: list[str], moves: list[dict], part_1=True):
     for move in moves:
         from_stack = move["from"]
         to_stack = move["to"]
 
-        if part_2:
-            stacks[to_stack].extend(stacks[from_stack][-move["quantity"] :])
-            stacks[from_stack] = stacks[from_stack][: -move["quantity"]]
+        if part_1:
+            stacks[to_stack].extend(stacks[from_stack][-move["quantity"] :][::-1])
         else:
-            for _ in range(move["quantity"]):
-                stacks[to_stack].append(stacks[from_stack].pop())
+            stacks[to_stack].extend(stacks[from_stack][-move["quantity"] :])
+
+        stacks[from_stack] = stacks[from_stack][: -move["quantity"]]
 
 
 def part_1(stacks: list[str], moves: list[dict]):
@@ -62,7 +62,7 @@ def part_1(stacks: list[str], moves: list[dict]):
 
 def part_2(stacks: list[str], moves: list[dict]):
     s = copy.deepcopy(stacks)
-    apply_moves(s, moves, part_2=True)
+    apply_moves(s, moves, part_1=False)
     return "".join(x[-1] for x in s)
 
 
