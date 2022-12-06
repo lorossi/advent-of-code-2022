@@ -1,5 +1,5 @@
 def n_different(data: str, n: int = 4) -> int:
-    for i in range(4, len(data)):
+    for i in range(n, len(data)):
         if len(set(data[i - n : i])) == n:
             return i
 
