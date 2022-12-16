@@ -93,26 +93,43 @@ def part_two() -> int:
 
             intersections.add((int(x), int(y)))
 
-    for px, py in intersections:
-        found = False
+    # dx and dy are not needed as the solution lies just outside a sensor's range
+    phase = 0
+    dx = 0
+    dy = 0
 
-        # check if the point is in range of all sensors
-        for s in zip(sensors, beacons):
-            sx, sy = s[0]
-            bx, by = s[1]
+    while True:
+        for px, py in intersections:
+            found = False
 
-            # distance between sensor and beacon
-            beacon_d = abs(sx - bx) + abs(sy - by)
-            # distance between sensor and point
-            point_d = abs(sx - px) + abs(sy - py)
+            # check if the point is in range of all sensors
+            for s in zip(sensors, beacons):
+                sx, sy = s[0]
+                bx, by = s[1]
 
-            if point_d <= beacon_d:
-                found = True
-                break
+                # distance between sensor and beacon
+                beacon_d = abs(sx - bx) + abs(sy - by)
+                # distance between sensor and point
+                point_d = abs(sx - px - dx) + abs(sy - py - dy)
 
-        if not found:
-            print(px, py)
-            return px * 4000000 + py
+                if point_d <= beacon_d:
+                    found = True
+                    break
+
+            if not found:
+                return (px - dx) * 4000000 + (py - dy)
+
+        match phase:
+            case 0:
+                dx += 1
+            case 1:
+                dy += 1
+            case 2:
+                dx *= 1
+            case 3:
+                dy *= 1
+
+        phase = (phase + 1) % 4
 
 
 def main():
